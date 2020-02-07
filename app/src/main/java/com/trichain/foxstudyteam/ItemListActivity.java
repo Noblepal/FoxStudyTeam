@@ -1,14 +1,23 @@
 package com.trichain.foxstudyteam;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -18,8 +27,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.trichain.foxstudyteam.adapter.NewsAdapter;
 import com.trichain.foxstudyteam.dummy.DummyContent;
+import com.trichain.foxstudyteam.models.News;
+import com.trichain.foxstudyteam.models.RSSItem;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,11 +48,12 @@ import java.util.List;
  */
 public class ItemListActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private boolean mTwoPane;
+
+    private ArrayList<RSSItem> newsArrayList = new ArrayList<>();
+    private NewsAdapter adapter;
+
+    String category = null;
+    private static final String TAG = "ItemListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,94 +64,85 @@ public class ItemListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        mTwoPane = false;
+        category = getIntent().getExtras().getString("category", "trending");
 
-//        if (findViewById(R.id.item_detail_container) != null) {
-//            // The detail container view will be present only in the
-//            // large-screen layouts (res/values-w900dp).
-//            // If this view is present, then the
-//            // activity should be in two-pane mode.
-//            mTwoPane = false;
-//        }
+        RecyclerView recyclerView = findViewById(R.id.item_list);
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new NewsAdapter(this, newsArrayList);
+        recyclerView.setAdapter(adapter);
 
-        View recyclerView = findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+
+        getDataFromNEt(category);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+    private void getDataFromNEt(String category) {
+        int resId = getResources().getIdentifier(category, "array", getPackageName());
+        Log.e(TAG, "getDataFromNEt:" + getViewWordId(findViewById(resId)));
+        String[] urls = getResources().getStringArray(R.array.trending);
+
+        for (String url : urls) {
+
+            //Volley
+            retrieveNewsItem(url);
+
+        }
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    @SuppressLint("StaticFieldLeak")
+    private void retrieveNewsItem(final String url) {
 
-        private final ItemListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
-        private boolean mTwoPane=false;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        new AsyncTask<Void, String, Void>() {
+            String res = "";
+
             @Override
-            public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-//                if (mTwoPane) {
-////                    Log.d(TAG, "onClick: ");
-//                    Bundle arguments = new Bundle();
-//                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
-//                    ItemDetailFragment fragment = new ItemDetailFragment();
-//                    fragment.setArguments(arguments);
-//                    mParentActivity.getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.item_detail_container, fragment)
-//                            .commit();
-//                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, ItemDetailActivity.class);
-//                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, 3);
+            protected void onPreExecute() {
+                super.onPreExecute();
 
-                    context.startActivity(intent);
-//                }
             }
-        };
 
-        SimpleItemRecyclerViewAdapter(ItemListActivity parent,
-                                      List<DummyContent.DummyItem> items,
-                                      boolean twoPane) {
-            mValues = items;
-            mParentActivity = parent;
-            mTwoPane = twoPane;
-        }
+            @Override
+            protected Void doInBackground(Void... voids) {
+                RSSParser rssParser = new RSSParser();
+                List<RSSItem> rssItemList = rssParser.getRSSFeedItems(url);
 
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_list_content, parent, false);
-            return new ViewHolder(view);
-        }
+                newsArrayList.add((RSSItem) Arrays.asList(rssItemList));
+                //TODO: To be continued...
 
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-           // holder.mIdView.setText(mValues.get(position).id);
-            /*holder.mContentView.setText(mValues.get(position).content);
+                return null;
+            }
 
-            holder.itemView.setTag(mValues.get(position));*/
-            holder.itemView.setOnClickListener(mOnClickListener);
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
 
-        }
 
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
+    }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
-            //final TextView mIdView;
-            final TextView mContentView;
+    private void populateRecyclerView() {
 
-            ViewHolder(View view) {
-                super(view);
-               // mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+
+        //TODO: Get data from net into arraylist then into adapter
+
+
+    }
+
+    public String getViewWordId(View v) {
+        String name5 = null;
+        Field[] campos = R.id.class.getFields();
+        for (Field f : campos) {
+            try {
+                if (v.getId() == f.getInt(null)) {
+                    name5 = f.getName();
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+        Log.e(TAG, "getViewWordId: " + name5);
+        return name5;
     }
 }
