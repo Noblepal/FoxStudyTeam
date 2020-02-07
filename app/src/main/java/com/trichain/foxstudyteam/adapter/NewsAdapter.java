@@ -42,13 +42,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         View v=null;
         if (viewType==1){
 
-            View vv= LayoutInflater.from(context).inflate(R.layout.banner,null);
+            View vv= LayoutInflater.from(context).inflate(R.layout.banner,parent,false);
             AdView adView=vv.findViewById(R.id.banner);
             AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
             v=vv;
         }else{
             v= LayoutInflater.from(context).inflate(R.layout.item_list_content, parent, false);
+
 
         }
         return new NewsViewHolder(v);
@@ -57,24 +58,27 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         final RSSItem news = newsArrayList.get(position);
+        if (position % 4 == 0){
 
-        holder.category.setText(category);
-        holder.title.setText(news.getTitle());
-        holder.link.setText(news.getLink());
-        holder.thisitem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ItemDetailActivity.class);
-                intent.putExtra("category", category);
-                intent.putExtra("tittle", news.getTitle());
-                intent.putExtra("url", news.getLink());
-                intent.putExtra("image", news.getImage());
-                intent.putExtra("description", news.getDescription());
-                context.startActivity(intent);
+        }else {
+            holder.category.setText(category);
+            holder.title.setText(news.getTitle());
+            holder.link.setText(news.getLink());
+            holder.thisitem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ItemDetailActivity.class);
+                    intent.putExtra("category", category);
+                    intent.putExtra("tittle", news.getTitle());
+                    intent.putExtra("url", news.getLink());
+                    intent.putExtra("image", news.getImage());
+                    intent.putExtra("description", news.getDescription());
+                    context.startActivity(intent);
 
 
-            }
-        });
+                }
+            });
+
 //        holder.category.setText(news.getCategory());
 
 
@@ -84,6 +88,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.image);*/
 //        holder.category.getParent().f
+        }
 
     }
 
@@ -94,7 +99,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        if (position % 3 == 0)
+        if (position % 4 == 0)
             return 1;
         return 11;
     }
