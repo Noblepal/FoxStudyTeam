@@ -1,4 +1,89 @@
 <resources>
     <string name="app_name">FoxStudyTeam</string>
     <string name="title_item_detail">Item Detail</string>
+
+    <!--rss links-->
+    <string-array name="trending">
+        <item >https%3A%2F%2Fwww.vox.com%2Frss%2Findex.xml</item>
+        <item >https%3A%2F%2Frss.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FMostViewed.xml</item>
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Fmain</item>
+    </string-array>
+    <string-array name="breaking">
+        <item >https%3A%2F%2Fwww.google.com%2Falerts%2Ffeeds%2F14324040333534934634%2F5696723703413512463</item>
+        <item >https%3A%2F%2Frss.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FMostViewed.xml</item>
+    </string-array>
+    <string-array name="environment">
+        <item >https%3A%2F%2Fwww.google.com%2Falerts%2Ffeeds%2F14324040333534934634%2F14947768217276270243</item>
+    </string-array>
+    <string-array name="politics">
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Fpolitics.xml</item>
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Fpolitics</item>
+    </string-array>
+    <string-array name="sports">
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Fsports.xml</item>
+        <item >https%3A%2F%2Frss.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FSports.xml</item>
+        <item >https%3A%2F%2Fwww.dailymail.co.uk%2Fsport%2Findex.rss</item>
+        <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fedition_sport.rss</item>
+    </string-array>
+    <string-array name="stock">
+        <item >https%3A%2F%2Fwww.google.com%2Falerts%2Ffeeds%2F14324040333534934634%2F9101351936439481530</item>
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Fbusiness.xml</item>
+    </string-array>
+    <string-array name="lifestyle">
+        <item >https%3A%2F%2Fwww.google.com%2Falerts%2Ffeeds%2F14324040333534934634%2F7892570087384798552</item>
+    </string-array>
+    <string-array name="health">
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Fhealth.xml</item>
+        <item >https%3A%2F%2Fwww.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FHealth.xml</item>
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Fhealth</item>
+        <item >https%3A%2F%2Fwww.google.com%2Falerts%2Ffeeds%2F14324040333534934634%2F7892570087384797795</item>
+    </string-array>
+    <string-array name="tech">
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Ftechnology</item>
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Ftech.xml</item>
+        <item >https%3A%2F%2Frss.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FTechnology.xml</item>
+        <item >https%3A%2F%2Ffeeds.feedburner.com%2Fventurebeat%2FSZYF</item>
+        <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fedition_technology.rss</item>
+    </string-array>
+    <string-array name="business">
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Fbusiness.xml</item>
+        <item >https%3A%2F%2Frss.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FBusiness.xml</item>
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Fmoneywatch</item>
+        <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fmoney_news_international.rss</item>
+    </string-array>
+    <string-array name="entertainment">
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Fentertainment</item>
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Ftvandmovies.xml</item>
+        <item >https%3A%2F%2Fwww.theverge.com%2Frss%2Findex.xml</item>
+        <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fedition_entertainment.rss</item>
+    </string-array>
+    <string-array name="weather">
+        <item >https%3A%2F%2Fwww.google.com%2Falerts%2Ffeeds%2F14324040333534934634%2F5757436845073030341</item>
+    </string-array>
+    <string-array name="art">
+        <item >https%3A%2F%2Frss.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FArtandDesign.xml</item>
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Fentertainment</item>
+    </string-array>
+    <string-array name="travel">
+        <item >https%3A%2F%2Fwww.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FTravel.xml</item>
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Ftravel.xml</item>
+        <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fedition_travel.rss</item>
+    </string-array>
+    <string-array name="science">
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Fscience.xml</item>
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Fscience</item>
+        <item >https%3A%2F%2Frss.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FScience.xml</item>
+        <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fedition_space.rss</item>
+    </string-array>
+    <string-array name="food">
+        <item >https%3A%2F%2Fwww.buzzfeed.com%2Fcategory%2Ffood.xml</item>
+        <item >https%3A%2F%2Fwww.google.com%2Falerts%2Ffeeds%2F14324040333534934634%2F7383140156307618621</item>
+    </string-array>
+    <string-array name="other">
+        <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fedition_entertainment.rss</item>
+        <item >https%3A%2F%2Fwww.google.com%2Falerts%2Ffeeds%2F14324040333534934634%2F6262540949426280317</item>
+        <item >https%3A%2F%2Fwww.cbsnews.com%2Flatest%2Frss%2Fmain</item>
+        <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fedition_technology.rss</item>
+    </string-array>
+    <!--end of rss links-->
 </resources>

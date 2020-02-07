@@ -52,6 +52,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/trending"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -60,18 +61,19 @@
                     android:gravity="center"
                     android:text="Trending"
                     android:textAllCaps="true"
-                    android:textColor="@color/red"/>
+                    android:textColor="@color/red" />
 
                 <TextView
+                    android:id="@+id/breaking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_shape_red"
                     android:gravity="center"
-                    android:textColor="@color/red"
                     android:text="Breaking News"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textColor="@color/red" />
 
             </LinearLayout>
 
@@ -83,6 +85,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/environment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -93,14 +96,15 @@
                     android:textAllCaps="true" />
 
                 <TextView
+                    android:id="@+id/politics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_shape"
                     android:gravity="center"
-                    android:text="Politics"
                     android:onClick="goToNext"
+                    android:text="Politics"
                     android:textAllCaps="true" />
 
             </LinearLayout>
@@ -113,6 +117,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/sports"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -123,6 +128,7 @@
                     android:textAllCaps="true" />
 
                 <TextView
+                    android:id="@+id/stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -142,6 +148,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/lifestyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -152,6 +159,7 @@
                     android:textAllCaps="true" />
 
                 <TextView
+                    android:id="@+id/health"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -171,6 +179,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/tech"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -181,6 +190,7 @@
                     android:textAllCaps="true" />
 
                 <TextView
+                    android:id="@+id/business"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -200,6 +210,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/entertainment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -210,6 +221,7 @@
                     android:textAllCaps="true" />
 
                 <TextView
+                    android:id="@+id/weather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -229,6 +241,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/art"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -239,6 +252,7 @@
                     android:textAllCaps="true" />
 
                 <TextView
+                    android:id="@+id/travel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -258,6 +272,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/food"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -268,6 +283,7 @@
                     android:textAllCaps="true" />
 
                 <TextView
+                    android:id="@+id/science"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
@@ -287,6 +303,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/other"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
