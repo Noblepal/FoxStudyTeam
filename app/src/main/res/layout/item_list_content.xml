@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:orientation="horizontal"
+    android:id="@+id/thisitem"
     android:weightSum="2">
 
     <LinearLayout

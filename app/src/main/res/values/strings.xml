@@ -86,4 +86,12 @@
         <item >http%3A%2F%2Frss.cnn.com%2Frss%2Fedition_technology.rss</item>
     </string-array>
     <!--end of rss links-->
+
+    <string name="interstitial_ad_sample">Interstitial Ad Sample</string>
+    <string name="level_one">Level One</string>
+    <string name="level_two">Level Two</string>
+    <string name="ad_id_interstitial">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="ad_id_banner">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_id_reward">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="gameHeader">My Game App</string>
 </resources>

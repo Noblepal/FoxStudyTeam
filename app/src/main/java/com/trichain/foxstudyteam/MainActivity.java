@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public void goToNext(View view){
         Intent intent=new Intent(MainActivity.this, ItemListActivity.class);
         intent.putExtra("category",getViewWordId(view));
-//        startActivity(intent);
+        startActivity(intent);
     }
     public String getViewWordId(View v){
         String name5 = null;

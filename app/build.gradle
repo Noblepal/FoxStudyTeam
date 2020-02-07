@@ -38,4 +38,13 @@ dependencies {
 
     //Volley
     implementation 'com.android.volley:volley:1.1.1'
+
+    //rss parser
+    implementation 'com.prof.rssparser:rssparser:2.1.1'
+
+    //rate app
+    implementation 'io.github.kobakei:ratethisapp:1.0.0'
+
+    //ads
+    implementation 'com.google.android.gms:play-services-ads:18.3.0'
 }

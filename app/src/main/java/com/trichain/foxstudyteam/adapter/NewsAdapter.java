@@ -1,9 +1,11 @@
 package com.trichain.foxstudyteam.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,42 +14,76 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.trichain.foxstudyteam.ItemDetailActivity;
 import com.trichain.foxstudyteam.R;
 import com.trichain.foxstudyteam.models.News;
+import com.trichain.foxstudyteam.models.RSSItem;
 
 import java.util.ArrayList;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     Context context;
-    ArrayList<News> newsArrayList;
+    ArrayList<RSSItem> newsArrayList;
+    String category;
 
-    public NewsAdapter(Context context, ArrayList<News> newsArrayList) {
+    public NewsAdapter(Context context, ArrayList<RSSItem> newsArrayList, String category) {
         this.context = context;
         this.newsArrayList = newsArrayList;
+        this.category = category;
     }
 
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_list_content, parent, false);
+        View v=null;
+        if (viewType==1){
+
+            View vv= LayoutInflater.from(context).inflate(R.layout.banner,null);
+            AdView adView=vv.findViewById(R.id.banner);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            v=vv;
+        }else{
+            v= LayoutInflater.from(context).inflate(R.layout.item_list_content, parent, false);
+
+        }
         return new NewsViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
-        News news = newsArrayList.get(position);
+        final RSSItem news = newsArrayList.get(position);
 
-        holder.category.setText(news.getCategory());
+        holder.category.setText(category);
         holder.title.setText(news.getTitle());
         holder.link.setText(news.getLink());
-        holder.category.setText(news.getCategory());
+        holder.thisitem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ItemDetailActivity.class);
+                intent.putExtra("category", category);
+                intent.putExtra("tittle", news.getTitle());
+                intent.putExtra("url", news.getLink());
+                intent.putExtra("image", news.getImage());
+                intent.putExtra("description", news.getDescription());
+                context.startActivity(intent);
 
 
-        Glide.with(context)
-                .load(news.getImagr_url())
+            }
+        });
+//        holder.category.setText(news.getCategory());
+
+
+        /*Glide.with(context)
+                .load(news.getImage())
                 .fallback(R.drawable.ic_broken_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.image);
+                .into(holder.image);*/
+//        holder.category.getParent().f
 
     }
 
@@ -56,10 +92,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         return newsArrayList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position % 3 == 0)
+            return 1;
+        return 11;
+    }
+
     class NewsViewHolder extends RecyclerView.ViewHolder {
 
         TextView category, title, link;
         ImageView image;
+        View thisitem;
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +112,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             title = itemView.findViewById(R.id.contentTitle);
             link = itemView.findViewById(R.id.id_textSite);
             image = itemView.findViewById(R.id.imageNews);
+            thisitem = itemView.findViewById(R.id.thisitem);
+
         }
     }
 
