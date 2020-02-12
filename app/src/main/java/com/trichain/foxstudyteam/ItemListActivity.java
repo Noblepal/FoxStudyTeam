@@ -92,7 +92,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         AdRequest adRequest = new AdRequest.Builder().build();
 
         // Load ads into Interstitial Ads
-        mInterstitialAd.loadAd(adRequest);
+//        mInterstitialAd.loadAd(adRequest);
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -132,14 +132,14 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                 ((View)findViewById(R.id.textViewb)).setVisibility(View.GONE);
 
                 // Load ads into Interstitial Ads
-                mInterstitialAd.loadAd(adRequest);
+//                mInterstitialAd.loadAd(adRequest);
             }
         });
 
         //load reward videos
         mAd= MobileAds.getRewardedVideoAdInstance(this);
         mAd.setRewardedVideoAdListener(this);
-        loadRewardedVideo(mAd);
+//        loadRewardedVideo(mAd);
 
 
 

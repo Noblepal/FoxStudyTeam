@@ -133,7 +133,11 @@ public class RSSParser {
         }
     }
 
-
+    public void getImage(String a,int index){
+        String data = a;
+        String[] items = data.split(",");
+        Log.e(TAG, "getImage: " );
+    }
 
     public String getImage(String thing) {
         Log.e(TAG, "getImage: thing "+thing );
@@ -167,7 +171,7 @@ public class RSSParser {
 
 
             NetworkRequest.getInstance(context).addToRequestQueue(request);
-            Log.e(TAG, "onResponse: found something 22 " + xml);
+//            Log.e(TAG, "onResponse: found something 22 " + xml);
             return xml;
 
 
