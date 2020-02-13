@@ -416,7 +416,7 @@ public class RSSParser {
         return "";
     }
     public String getValue2(Element item, String str) {
-        NodeList n = item.getElementsByTagName(str);
+        NodeList n = item.getElementsByTagName(str);//
         return this.getElementValue2(n.item(0));
     }
     public String getValue(Element item, String str) {
