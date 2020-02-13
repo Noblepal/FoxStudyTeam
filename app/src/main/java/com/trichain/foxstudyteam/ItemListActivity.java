@@ -168,6 +168,9 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
 
         getDataFromNEt(category);
     }
+    public void getmenu(View view){
+        super.onBackPressed();
+    }
     private void loadRewardedVideo(final RewardedVideoAd mAd) {
         isVisible = true;
         if(scheduler == null){

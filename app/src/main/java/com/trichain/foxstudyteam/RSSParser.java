@@ -1,13 +1,11 @@
 package com.trichain.foxstudyteam;
 
 import android.content.Context;
-import android.icu.util.RangeValueIterator;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.StringRequest;
 import com.trichain.foxstudyteam.adapter.NewsAdapter;
 import com.trichain.foxstudyteam.models.RSSItem;
@@ -16,29 +14,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 public class RSSParser {
 
@@ -90,6 +77,66 @@ public class RSSParser {
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
                     String image = this.getValue2(e1, img_content);
+                    if (category=="sports"){
+                        image = getImage(description);
+                    }
+                    switch (category){
+                        case "trending":
+                            image = getImage(description);
+                            break;
+                        case "breaking":
+                            image = getImage(description);
+                            break;
+                        case "environment":
+                            image = getImage(description);
+                            break;
+                        case "politics":
+                            image = getImage(description);
+                            break;
+                        case "sports":
+                            image = getImage(description);
+                            break;
+                        case "stock":
+                            image = getImage(description);
+                            break;
+                        case "lifestyle":
+                            image = getImage(description);
+                            break;
+                        case "health":
+                            image = getImage(description);
+                            break;
+                        case "tech":
+                            image = getImage(description);
+                            break;
+                        case "business":
+                            image = getImage(description);
+                            break;
+                        case "entertainment":
+                            image = getImage(description);
+                            break;
+                        case "weather":
+                            image = getImage(description);
+                            break;
+                        case "art":
+                            image = getImage(description);
+                            break;
+                        case "travel":
+                            image = getImage(description);
+                            break;
+                        case "science":
+                            image = getImage(description);
+                            break;
+                        case "food":
+                            image = getImage(description);
+                            break;
+                        case "other":
+                            image = getImage(description);
+                            break;
+                        default:
+                            image = getImage(description);
+                            break;
+
+                    }
                     /*if(image==null){
                         Element elem=(Element) items.item(i);
                         Node child;
@@ -133,13 +180,15 @@ public class RSSParser {
         }
     }
 
-    public void getImage(String a,int index){
+    public String getImage(String a){
         String data = a;
-        String[] items = data.split(",");
-        Log.e(TAG, "getImage: " );
+        String[] items = data.split("<img src=\"");
+        String[] items2= items[1].split("\"");
+        Log.e(TAG, "getImage: "+items2[0] );
+        return items2[0];
     }
 
-    public String getImage(String thing) {
+   /* public String getImage(String thing) {
         Log.e(TAG, "getImage: thing "+thing );
         int index = thing.lastIndexOf("jpg");
         int index2 = thing.lastIndexOf("http");
@@ -148,7 +197,7 @@ public class RSSParser {
         yourCuttedString = yourCuttedString.substring(1, index2);
         Log.e(TAG, "getImage: 2 "+index2 );
        return "http"+yourCuttedString+"jpg";
-    }
+    }*/
     public String getXmlFromUrl(final String url, final NewsAdapter adapter, final ArrayList<RSSItem> arrayList) {
 
         try {

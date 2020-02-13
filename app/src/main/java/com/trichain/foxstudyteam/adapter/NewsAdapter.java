@@ -2,6 +2,7 @@ package com.trichain.foxstudyteam.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,13 +81,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             });
 
 //        holder.category.setText(news.getCategory());
-
-
-        /*Glide.with(context)
+            Log.e("NewsAdapter", "onBindViewHolder: "+news.getImage() );
+        Glide.with(context)
                 .load(news.getImage())
                 .fallback(R.drawable.ic_broken_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.image);*/
+                .into(holder.image);
 //        holder.category.getParent().f
         }
 

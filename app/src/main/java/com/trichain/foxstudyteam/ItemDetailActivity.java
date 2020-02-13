@@ -2,19 +2,25 @@ package com.trichain.foxstudyteam;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Html;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
 
 import android.view.MenuItem;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -41,8 +47,17 @@ public class ItemDetailActivity extends AppCompatActivity {
             ((TextView)findViewById(R.id.category)).setText(category);
             ((TextView)findViewById(R.id.title)).setText(title);
             ((TextView)findViewById(R.id.link)).setText(link);
-            ((TextView)findViewById(R.id.description)).setText(description);
-            //TODO set image resource
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                ((TextView)findViewById(R.id.description)).setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                ((TextView)findViewById(R.id.description)).setText(Html.fromHtml(description));
+            }
+            Glide.with(this)
+                    .load(image)
+                    .fallback(R.drawable.ic_broken_image)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(((ImageView)findViewById(R.id.headLineImage)));
+
         }else {
             finish();
         }
