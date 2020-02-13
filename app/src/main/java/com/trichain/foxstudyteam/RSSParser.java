@@ -177,6 +177,7 @@ public class RSSParser {
                     rssItem.setGuid(guid);
                     rssItem.setImage(image);
                     // adding item to list
+
                     itemsList.add(rssItem);
 //                    Log.e(TAG, "getRSSFeedItems: data:: " + image);
                 }
