@@ -1,26 +1,64 @@
 package com.trichain.foxstudyteam;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.reward.AdMetadataListener;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.kobakei.ratethisapp.RateThisApp;
+import com.trichain.foxstudyteam.adapter.NewsAdapter;
 import com.trichain.foxstudyteam.dummy.DummyContent;
+import com.trichain.foxstudyteam.models.News;
+import com.trichain.foxstudyteam.models.RSSItem;
 
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static android.net.sip.SipErrorCode.TIME_OUT;
 
 /**
  * An activity representing a list of Items. This activity
@@ -30,111 +68,371 @@ import java.util.List;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class ItemListActivity extends AppCompatActivity {
+public class ItemListActivity extends AppCompatActivity implements RewardedVideoAdListener {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private boolean mTwoPane;
+
+    private ArrayList<RSSItem> newsArrayList = new ArrayList<>();
+    private NewsAdapter adapter;
+
+    String category = null;
+    private static final String TAG = "ItemListActivity";
+    private InterstitialAd mInterstitialAd;
+    private ScheduledExecutorService scheduler,scheduler2;
+    private boolean isVisible;
+    RewardedVideoAd mAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
+        MobileAds.initialize(this, getResources().getString(R.string.ad_id_banner));
+        mInterstitialAd=new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.ad_id_interstitial));
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Load ads into Interstitial Ads
+//        mInterstitialAd.loadAd(adRequest);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                isVisible=true;
+                mInterstitialAd.show();
+                ((View)findViewById(R.id.textViewb)).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+            }
+
+            @Override
+            public void onAdClosed() {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                ((View)findViewById(R.id.textViewb)).setVisibility(View.GONE);
+
+                // Load ads into Interstitial Ads
+//                mInterstitialAd.loadAd(adRequest);
+            }
+        });
+
+        //load reward videos
+        mAd= MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+//        loadRewardedVideo(mAd);
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+        RateThisApp.onStart(this);
+        if (getIntent().getBooleanExtra("rate",true)){
+            // Monitor launch times and interval from installation
+            // If the condition is satisfied, "Rate this app" dialog will be shown
+            RateThisApp.showRateDialogIfNeeded(this);
+        }
+        category = getIntent().getExtras().getString("category", "trending");
+        @SuppressLint("SimpleDateFormat")
+        DateFormat df = new SimpleDateFormat("EEE MMMM dd");
+        String now = df.format(new Date());
+        Log.e(TAG, "onCreate: "+now );
+        ((TextView)findViewById(R.id.textView)).setText(now);
 
-        mTwoPane = false;
+        RecyclerView recyclerView = findViewById(R.id.item_list);
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new NewsAdapter(this, newsArrayList, category);
+        recyclerView.setAdapter(adapter);
 
-//        if (findViewById(R.id.item_detail_container) != null) {
-//            // The detail container view will be present only in the
-//            // large-screen layouts (res/values-w900dp).
-//            // If this view is present, then the
-//            // activity should be in two-pane mode.
-//            mTwoPane = false;
-//        }
 
-        View recyclerView = findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        getDataFromNEt(category);
+    }
+    public void getmenu(View view){
+        super.onBackPressed();
+    }
+    private void loadRewardedVideo(final RewardedVideoAd mAd) {
+        isVisible = true;
+        if(scheduler == null){
+            scheduler = Executors.newSingleThreadScheduledExecutor();
+            scheduler.scheduleAtFixedRate(new Runnable() {
+                public void run() {
+                    Log.i("hello", "world");
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (mAd.isLoaded() && isVisible) {
+                                mAd.loadAd("ca-app-pub-4824494878097656/8403117409",//use this id for testing
+                                        new AdRequest.Builder().build());
+                            } else {
+                                Log.d("TAG"," Interstitial not loaded");
+                            }
+
+                            displayInterstitial();
+                        }
+                    });
+                }
+            }, 10, 10, TimeUnit.SECONDS);
+
+        }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isVisible = true;
+        if(scheduler == null){
+            scheduler = Executors.newSingleThreadScheduledExecutor();
+            scheduler.scheduleAtFixedRate(new Runnable() {
+                public void run() {
+                    Log.i("hello", "world");
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (mInterstitialAd.isLoaded() && isVisible) {
+                                mInterstitialAd.show();
+                            } else {
+                                Log.d("TAG"," Interstitial not loaded");
+                            }
+                            displayInterstitial();
+                        }
+                    });
+                }
+            }, 10, 10, TimeUnit.SECONDS);
+
+        }
+
+
+}
+
+    private void displayInterstitial() {
+
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
-    }
-
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final ItemListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
-        private boolean mTwoPane=false;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    public void rotateme(final View v){
+        final Intent intent=new Intent(ItemListActivity.this,ItemListActivity.class);
+        intent.putExtra("category",category);
+        v.animate().rotation(180).start();
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-//                if (mTwoPane) {
-////                    Log.d(TAG, "onClick: ");
-//                    Bundle arguments = new Bundle();
-//                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
-//                    ItemDetailFragment fragment = new ItemDetailFragment();
-//                    fragment.setArguments(arguments);
-//                    mParentActivity.getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.item_detail_container, fragment)
-//                            .commit();
-//                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, ItemDetailActivity.class);
-//                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, 3);
-
-                    context.startActivity(intent);
-//                }
+            public void run() {
+                v.animate().rotation(360).start();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        v.animate().rotation(540).start();
+                        startActivity(intent);
+                        finish();
+                    }
+                }, 1000);
             }
-        };
+        }, 1000);
+    }
+    private void getDataFromNEt(String category) {
+        String[] urls = currentView(category);
 
-        SimpleItemRecyclerViewAdapter(ItemListActivity parent,
-                                      List<DummyContent.DummyItem> items,
-                                      boolean twoPane) {
-            mValues = items;
-            mParentActivity = parent;
-            mTwoPane = twoPane;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_list_content, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-           // holder.mIdView.setText(mValues.get(position).id);
-            /*holder.mContentView.setText(mValues.get(position).content);
-
-            holder.itemView.setTag(mValues.get(position));*/
-            holder.itemView.setOnClickListener(mOnClickListener);
+        for (String url : urls) {
+            try {
+                url= URLDecoder.decode(url, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            Log.e(TAG, "getDataFromNEt URL:" + url);
+            //Volley
+            retrieveNewsItem(url);
 
         }
+    }
+    private String[] currentView(String category1){
+        Log.e(TAG, "currentView: "+category1 );
+        String[] v=null;
+        switch (category1){
+            case "trending":
+                v=getResources().getStringArray(R.array.trending);
+                break;
+            case "breaking":
+                v=getResources().getStringArray(R.array.breaking);
+                break;
+            case "environment":
+                v=getResources().getStringArray(R.array.environment);
+                break;
+            case "politics":
+                v=getResources().getStringArray(R.array.politics);
+                break;
+            case "sports":
+                v=getResources().getStringArray(R.array.sports);
+                break;
+            case "stock":
+                v=getResources().getStringArray(R.array.stock);
+                break;
+            case "lifestyle":
+                v=getResources().getStringArray(R.array.lifestyle);
+                break;
+            case "health":
+                v=getResources().getStringArray(R.array.health);
+                break;
+            case "tech":
+                v=getResources().getStringArray(R.array.tech);
+                break;
+            case "business":
+                v=getResources().getStringArray(R.array.business);
+                break;
+            case "entertainment":
+                v=getResources().getStringArray(R.array.entertainment);
+                break;
+            case "weather":
+                v=getResources().getStringArray(R.array.weather);
+                break;
+            case "art":
+                v=getResources().getStringArray(R.array.art);
+                break;
+            case "travel":
+                v=getResources().getStringArray(R.array.travel);
+                break;
+            case "science":
+                v=getResources().getStringArray(R.array.science);
+                break;
+            case "food":
+                v=getResources().getStringArray(R.array.food);
+                break;
+            case "other":
+                v=getResources().getStringArray(R.array.other);
+                break;
+            default:
+                v=getResources().getStringArray(R.array.trending);
+                break;
 
-        @Override
-        public int getItemCount() {
-            return mValues.size();
         }
+        return v;
+    }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
-            //final TextView mIdView;
-            final TextView mContentView;
+    @SuppressLint("StaticFieldLeak")
+    private void retrieveNewsItem(final String url) {
 
-            ViewHolder(View view) {
-                super(view);
-               // mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+        new AsyncTask<Void, String, Void>() {
+            String res = "";
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                RSSParser rssParser = new RSSParser(ItemListActivity.this);
+
+                List<RSSItem> rssItemList = rssParser.getRSSFeedItems(url,adapter,newsArrayList,category);
+
+                populateRecyclerView(rssItemList);
+
+//                newsArrayList.add((RSSItem) Arrays.asList(rssItemList));
+                //TODO: To be continued...
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
+
+
+    }
+
+    private void populateRecyclerView(List<RSSItem> rssItemList) {
+
+//        newsArrayList.addAll(rssItemList);
+//        adapter.notifyDataSetChanged();
+
+
+        //TODO: Get data from net into arraylist then into adapter
+
+
+    }
+
+    public String getViewWordId(View v) {
+        String name5 = null;
+        Field[] campos = R.id.class.getFields();
+        for (Field f : campos) {
+            try {
+                if (v.getId() == f.getInt(null)) {
+                    name5 = f.getName();
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+        Log.e(TAG, "getViewWordId: " + name5);
+        return name5;
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        mAd.show();
+        if (mAd.isLoaded()){
+            mAd.show();
+            ((View)findViewById(R.id.textViewb)).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+//        ((View)findViewById(R.id.textViewb)).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+//        ((View)findViewById(R.id.textViewb)).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+//        ((View)findViewById(R.id.textViewb)).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+//        ((View)findViewById(R.id.textViewb)).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+//        ((View)findViewById(R.id.textViewb)).setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+//        ((View)findViewById(R.id.textViewb)).setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
     }
 }

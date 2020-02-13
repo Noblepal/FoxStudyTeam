@@ -4,6 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textViewb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="This ad helps keep our app fre of charge"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="2dp"
+        android:visibility="gone"
+        app:layout_constraintVertical_bias="0.0" />
+
     <ImageView
         android:id="@+id/imageMain"
         android:layout_width="match_parent"
@@ -53,6 +70,8 @@
             android:padding="8dp">
 
             <ImageButton
+                android:id="@+id/getMenu"
+                android:onClick="getmenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -61,11 +80,13 @@
                 android:src="@drawable/ic_menu" />
 
             <ImageButton
+                android:id="@+id/rotate"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
+                android:onClick="rotateme"
                 android:src="@drawable/ic_refrech" />
 
         </RelativeLayout>
