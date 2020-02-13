@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarMain"
         android:layout_width="match_parent"
@@ -17,13 +18,22 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp">
+            android:padding="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/app_name"
+                android:textColor="@color/black"
+                android:textSize="21sp" />
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_margin="16dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_back" />
 
@@ -54,28 +64,30 @@
                 <TextView
                     android:id="@+id/trending"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
                     android:background="@drawable/button_shape_red"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="Trending"
                     android:textAllCaps="true"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/red"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/breaking"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
                     android:background="@drawable/button_shape_red"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="Breaking News"
                     android:textAllCaps="true"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/red"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -89,26 +101,28 @@
                 <TextView
                     android:id="@+id/environment"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="Environment"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/politics"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="Politics"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -122,26 +136,28 @@
                 <TextView
                     android:id="@+id/sports"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="Sports"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/stock"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="stock market"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -155,26 +171,28 @@
                 <TextView
                     android:id="@+id/lifestyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="lifestyle"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/health"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="health"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -188,26 +206,28 @@
                 <TextView
                     android:id="@+id/tech"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="tech"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/business"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="business"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -221,26 +241,28 @@
                 <TextView
                     android:id="@+id/entertainment"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="entertainment"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/weather"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="weather"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -254,26 +276,28 @@
                 <TextView
                     android:id="@+id/art"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="art &amp; music"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/travel"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="travel"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -287,26 +311,28 @@
                 <TextView
                     android:id="@+id/food"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="food"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/science"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="science"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -320,18 +346,17 @@
                 <TextView
                     android:id="@+id/other"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="6dp"
                     android:layout_weight="2"
-                    android:onClick="goToNext"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/textview_selector"
                     android:gravity="center"
+                    android:onClick="goToNext"
                     android:text="other topics"
-                    android:textAllCaps="true" />
-
+                    android:textAllCaps="true"
+                    android:textSize="18sp" />
 
             </LinearLayout>
-
 
         </LinearLayout>
     </ScrollView>

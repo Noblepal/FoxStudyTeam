@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,7 +53,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
 
     private ArrayList<RSSItem> newsArrayList = new ArrayList<>();
     private NewsAdapter adapter;
-
+    RecyclerView recyclerView;
     String category = null;
     ImageView headerImage;
     private static final String TAG = "ItemListActivity";
@@ -132,12 +134,12 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         }
         category = getIntent().getExtras().getString("category", "trending");
         @SuppressLint("SimpleDateFormat")
-        DateFormat df = new SimpleDateFormat("EEE MMMM dd");
+        DateFormat df = new SimpleDateFormat("EEE, MMMM dd");
         String now = df.format(new Date());
         Log.e(TAG, "onCreate: " + now);
         ((TextView) findViewById(R.id.textView)).setText(now);
 
-        RecyclerView recyclerView = findViewById(R.id.item_list);
+        recyclerView = findViewById(R.id.item_list);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewsAdapter(this, newsArrayList, category);
@@ -211,24 +213,52 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
 
     }
 
-    public void rotateme(final View v) {
+    public void spinMeRound(final View v) {
         final Intent intent = new Intent(ItemListActivity.this, ItemListActivity.class);
         intent.putExtra("category", category);
-        v.animate().rotation(180).start();
+
+        final RotateAnimation rotate = new RotateAnimation(
+                0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+        );
+        rotate.setDuration(250);
+        rotate.setRepeatCount(Animation.INFINITE);
+        v.startAnimation(rotate);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                refreshData(category);
+                v.clearAnimation();
+
+                /*startActivity(intent);
+                finish();*/
+            }
+        }, 3000);
+
+       /* v.animate().rotation(180).start();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+
                 v.animate().rotation(360).start();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         v.animate().rotation(540).start();
-                        startActivity(intent);
-                        finish();
+
                     }
-                }, 500);
+                }, 1);
             }
-        }, 400);
+        }, 2);*/
+    }
+
+    private void refreshData(String category) {
+        newsArrayList.clear();
+        adapter.notifyDataSetChanged();
+        getDataFromNEt(category);
     }
 
     private void getDataFromNEt(String category) {
