@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,25 +9,25 @@
         android:id="@+id/textViewb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="2dp"
         android:gravity="center"
         android:text="This ad helps keep our app fre of charge"
         android:textColor="#000000"
         android:textSize="32sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:elevation="2dp"
-        android:visibility="gone"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageMain"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="172dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/top_bg"
+        tools:src="@drawable/top_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +35,7 @@
     <View
         android:id="@+id/overlay"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="172dp"
         android:background="@color/black_overlay"
         android:scaleType="centerCrop"
         android:src="@drawable/top_bg"
@@ -43,17 +44,32 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textViewCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:text="Category" />
+
+    <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Sunday\n January 05"
+        android:text="Sun, January 05"
         android:textColor="@color/white"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewCategory" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -71,12 +87,12 @@
 
             <ImageButton
                 android:id="@+id/getMenu"
-                android:onClick="getmenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
+                android:onClick="getmenu"
                 android:src="@drawable/ic_menu" />
 
             <ImageButton
@@ -98,6 +114,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/grey"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageMain">
