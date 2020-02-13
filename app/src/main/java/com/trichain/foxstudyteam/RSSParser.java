@@ -84,7 +84,7 @@ public class RSSParser {
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
                     String image=getImage2(description);
-                    String image2=this.getValue(e1, TAG_GUID);
+                    String image2=this.getValue2(e1, TAG_GUID);
 //                    String image=this.getValue2(e1, img_content);
 /*
                     switch (category){
@@ -398,26 +398,72 @@ public class RSSParser {
         Node child;
         if (elem != null) {
             if (elem.hasChildNodes()) {
+                StringBuilder sb = new StringBuilder();
+
                 for (child = elem.getFirstChild(); child != null; child = child
                         .getNextSibling()) {
-                    Element e= (Element) child;
-
-                    Log.e(TAG, "getElementValue2: node item"+e.getAttributeNS(null,"url") );
-                    if (e.hasAttribute("url")) {
-                        String a=e.getAttribute("url");
-                        a=e.getAttributeNS(null,"url");
-                        Log.e(TAG, "getElementValue2: data:: " + a);
-                        return a;
+//                    DOMImplementationLS lsImpl = (DOMImplementationLS)elem.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
+//
+//                    LSSerializer lsSerializer = lsImpl.createLSSerializer();
+//                    sb.append(lsSerializer.writeToString(child));
+//                    Log.e(TAG, "getElementValue2: node item"+child.getPrefix());
+//                    Element e= (Element) elem;
+//
+//                    Log.e(TAG, "getElementValue2: node item"+e.getAttributeNS(null,"url") );
+//
+//                    if (e.hasAttribute("url")) {
+//                        String a=e.getAttribute("url");
+//                        Log.e(TAG, "getElementValue3: data:: " + a);
+//                        return a;
+//                    }
+                    if (child.getNodeType() == Node.TEXT_NODE || (child.getNodeType() == Node.CDATA_SECTION_NODE)) {
+                        return child.getNodeValue();
                     }
-
+                    if (child.getNodeType() == Node.ATTRIBUTE_NODE) {
+                        String key = child.getAttributes().getNamedItem("url").getNodeValue();
+                        Log.e(TAG, "getElementValue: "+key );
+                        return child.getNodeValue();
+                    }
                 }
             }
         }
         return "";
     }
-    public String getValue2(Element item, String str) {
-        NodeList n = item.getElementsByTagName(str);//
-        return this.getElementValue2(n.item(0));
+    public String getValue2(Element elem, String str) {
+//        NodeList elem = item2.getChildNodes();
+        if (elem != null) {
+            Node child;
+            if (elem.hasChildNodes()) {
+                StringBuilder sb = new StringBuilder();
+
+                for (child = elem.getFirstChild(); child != null; child = child
+                        .getNextSibling()) {
+//                    DOMImplementationLS lsImpl = (DOMImplementationLS)elem.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
+//
+//                    LSSerializer lsSerializer = lsImpl.createLSSerializer();
+//                    sb.append(lsSerializer.writeToString(child));
+//                    Log.e(TAG, "getElementValue2: node item"+child.getPrefix());
+//                    Element e= (Element) elem;
+//
+//                    Log.e(TAG, "getElementValue2: node item"+e.getAttributeNS(null,"url") );
+//
+//                    if (e.hasAttribute("url")) {
+//                        String a=e.getAttribute("url");
+//                        Log.e(TAG, "getElementValue3: data:: " + a);
+//                        return a;
+//                    }
+                    if (child.getNodeType() == Node.TEXT_NODE || (child.getNodeType() == Node.CDATA_SECTION_NODE)) {
+                        return child.getNodeValue();
+                    }
+                    if (child.getNodeType() == Node.ATTRIBUTE_NODE) {
+                        String key = child.getAttributes().getNamedItem("url").getNodeValue();
+                        Log.e(TAG, "getElementValuex: "+key );
+                        return child.getNodeValue();
+                    }
+                }
+            }
+        }
+        return "";
     }
     public String getValue(Element item, String str) {
         NodeList n = item.getElementsByTagName(str);
