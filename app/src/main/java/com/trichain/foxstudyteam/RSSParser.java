@@ -14,10 +14,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +45,7 @@ public class RSSParser {
     private static String TAG_ITEM = "item";
     private static String TAG_PUB_DATE = "pubDate";
     private static String TAG_GUID = "guid";
-    private static String img_content="media:content";
+    private static String img_content="media";
     String category = "";
     String xml = null;
 
@@ -76,67 +83,67 @@ public class RSSParser {
                     String description = this.getValue(e1, TAG_DESRIPTION);
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
-                    String image = this.getValue2(e1, img_content);
-                    if (category=="sports"){
-                        image = getImage(description);
-                    }
+                    String image=getImage2(description);
+                    String image2=this.getValue(e1, TAG_GUID);
+//                    String image=this.getValue2(e1, img_content);
+/*
                     switch (category){
                         case "trending":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "breaking":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "environment":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "politics":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "sports":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "stock":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "lifestyle":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "health":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "tech":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "business":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "entertainment":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "weather":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "art":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "travel":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "science":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "food":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         case "other":
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
                         default:
-                            image = getImage(description);
+                            image = getImage(e1,description);
                             break;
 
-                    }
+                    }*/
                     /*if(image==null){
                         Element elem=(Element) items.item(i);
                         Node child;
@@ -180,12 +187,111 @@ public class RSSParser {
         }
     }
 
-    public String getImage(String a){
+    public String getImage(Element e1, String a){
+        String image= this.getValue2(e1, img_content);
+
+
+
+
         String data = a;
         String[] items = data.split("<img src=\"");
         String[] items2= items[1].split("\"");
         Log.e(TAG, "getImage: "+items2[0] );
         return items2[0];
+    }
+
+    public String getImage2(String a){
+        String data = a;
+        String[] items2;
+        String b="";
+        String[] items = data.split("<img src=\"");
+        if (2<=items.length){
+            items2= items[1].split("\"");
+            b=items2[0];
+        }else{
+            Log.e(TAG, "getImage: "+a);
+        }
+        return b;
+    }
+    public void decode(String res){
+        String title = "";
+        String link = "";
+        String description = "";
+        String pubdate = "";
+        String guid = "";
+        String image = "";
+        try {
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(false);
+            XmlPullParser xpp = factory.newPullParser();
+            InputStream is = new ByteArrayInputStream(res.getBytes());
+            xpp.setInput(is,null);
+            // xpp.setInput(getInputStream(url), "UTF-8");
+
+            boolean insideItem = false;
+
+            // Returns the type of current event: START_TAG, END_TAG, etc..
+            int eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG) {
+
+                    if (xpp.getName().equalsIgnoreCase("item")) {
+                        insideItem = true;
+                    } else if (xpp.getName().equalsIgnoreCase("title")) {
+                        if (insideItem) {
+                            Log.e("Title is", xpp.nextText());
+                            title=xpp.nextText();
+                        }
+                    } else if (xpp.getName().equalsIgnoreCase("link")) {
+                        if (insideItem) {
+                            Log.e("Link is", xpp.nextText());
+                            link=xpp.nextText();
+                        }
+                    } else if (xpp.getName().equalsIgnoreCase("comments")) {
+                        if (insideItem) {
+                            Log.e("Comment is.", xpp.nextText());
+                        }
+                    } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
+                        if (insideItem) {
+                            Log.e("Publish Date is.", xpp.nextText());
+                        }
+                    } else if (xpp.getName().equalsIgnoreCase(TAG_DESRIPTION)) {
+                        if (insideItem) {
+                            Log.e("Media TAG_DESRIPTION", xpp.nextText());
+                            description=xpp.nextText();
+                        }
+                    } else if (xpp.getName().equalsIgnoreCase("media:content")) {
+                        if (insideItem){
+                            Log.e("Media Content url is.", xpp.getAttributeValue(null, "url"));
+                            image=xpp.getAttributeValue(null, "url");
+                            if (image.contentEquals("")||image==null){
+                                getImage2(description);
+                            }
+                        }
+                    } else if (xpp.getName().equalsIgnoreCase("media:title")) {
+                        if (insideItem) {
+                            Log.e("Media Content title.", xpp.nextText());
+                        }
+                    }
+                    /*RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, category,image);
+                    rssItem.setTitle(title);
+                    rssItem.setLink(link);
+                    rssItem.setDescription(description);
+                    rssItem.setPubdate(pubdate);
+                    rssItem.setGuid(guid);
+                    rssItem.setImage(image);
+                    // adding item to list
+                    itemsList.add(rssItem);*/
+//                    Log.e(TAG, "getRSSFeedItems: data:: " + image);
+                } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
+                    insideItem = false;
+                }
+
+                eventType = xpp.next(); /// move to next element
+            }
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
    /* public String getImage(String thing) {
@@ -208,7 +314,7 @@ public class RSSParser {
                     xml = response;
 //                    Log.e(TAG, "onResponse: found something " + xml);
                     parAgain(xml, adapter, arrayList);
-
+//                    decode(xml);
 
                 }
             }, new Response.ErrorListener() {
@@ -257,17 +363,30 @@ public class RSSParser {
         Node child;
         if (elem != null) {
             if (elem.hasChildNodes()) {
+                StringBuilder sb = new StringBuilder();
+
                 for (child = elem.getFirstChild(); child != null; child = child
                         .getNextSibling()) {
-                    Log.e(TAG, "getElementValue2: node item"+child.getPrefix());
-                    Element e= (Element) elem;
-
-                    if (e.hasAttribute("url")) {
-                        String a=e.getAttribute("url");
-                        Log.e(TAG, "getElementValue3: data:: " + a);
-                        return a;
-                    }
+//                    DOMImplementationLS lsImpl = (DOMImplementationLS)elem.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
+//
+//                    LSSerializer lsSerializer = lsImpl.createLSSerializer();
+//                    sb.append(lsSerializer.writeToString(child));
+//                    Log.e(TAG, "getElementValue2: node item"+child.getPrefix());
+//                    Element e= (Element) elem;
+//
+//                    Log.e(TAG, "getElementValue2: node item"+e.getAttributeNS(null,"url") );
+//
+//                    if (e.hasAttribute("url")) {
+//                        String a=e.getAttribute("url");
+//                        Log.e(TAG, "getElementValue3: data:: " + a);
+//                        return a;
+//                    }
                     if (child.getNodeType() == Node.TEXT_NODE || (child.getNodeType() == Node.CDATA_SECTION_NODE)) {
+                        return child.getNodeValue();
+                    }
+                    if (child.getNodeType() == Node.ATTRIBUTE_NODE) {
+                        String key = child.getAttributes().getNamedItem("url").getNodeValue();
+                        Log.e(TAG, "getElementValue: "+key );
                         return child.getNodeValue();
                     }
                 }
@@ -282,9 +401,11 @@ public class RSSParser {
                 for (child = elem.getFirstChild(); child != null; child = child
                         .getNextSibling()) {
                     Element e= (Element) child;
-                    Log.e(TAG, "getElementValue2: node item"+child );
+
+                    Log.e(TAG, "getElementValue2: node item"+e.getAttributeNS(null,"url") );
                     if (e.hasAttribute("url")) {
                         String a=e.getAttribute("url");
+                        a=e.getAttributeNS(null,"url");
                         Log.e(TAG, "getElementValue2: data:: " + a);
                         return a;
                     }
