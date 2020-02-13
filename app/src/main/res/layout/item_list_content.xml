@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/thisitem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -53,13 +54,21 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageNews"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="128dp"
         android:layout_height="120dp"
-        android:elevation="0dp"
-        android:layout_gravity="center_vertical"
-        android:scaleType="centerCrop"
-        android:src="@drawable/image" />
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false">
+
+        <ImageView
+            android:id="@+id/imageNews"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:elevation="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image" />
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
