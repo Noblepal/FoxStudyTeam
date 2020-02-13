@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +53,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
     private NewsAdapter adapter;
 
     String category = null;
+    ImageView headerImage;
     private static final String TAG = "ItemListActivity";
     private InterstitialAd mInterstitialAd;
     private ScheduledExecutorService scheduler, scheduler2;
@@ -140,6 +142,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewsAdapter(this, newsArrayList, category);
         recyclerView.setAdapter(adapter);
+        headerImage = findViewById(R.id.imageMain);
 
         TextView categoryTitle = findViewById(R.id.textViewCategory);
         categoryTitle.setText(category);
@@ -223,9 +226,9 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                         startActivity(intent);
                         finish();
                     }
-                }, 1000);
+                }, 500);
             }
-        }, 1000);
+        }, 400);
     }
 
     private void getDataFromNEt(String category) {
@@ -250,57 +253,75 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         switch (category1) {
             case "trending":
                 v = getResources().getStringArray(R.array.trending);
+                headerImage.setImageResource(R.drawable.trending);
                 break;
             case "breaking":
                 v = getResources().getStringArray(R.array.breaking);
+                headerImage.setImageResource(R.drawable.breaking_news);
                 break;
             case "environment":
                 v = getResources().getStringArray(R.array.environment);
+                headerImage.setImageResource(R.drawable.environment);
                 break;
             case "politics":
                 v = getResources().getStringArray(R.array.politics);
+                headerImage.setImageResource(R.drawable.politics);
                 break;
             case "sports":
                 v = getResources().getStringArray(R.array.sports);
+                headerImage.setImageResource(R.drawable.sports);
                 break;
             case "stock":
                 v = getResources().getStringArray(R.array.stock);
+                headerImage.setImageResource(R.drawable.stock);
                 break;
             case "lifestyle":
                 v = getResources().getStringArray(R.array.lifestyle);
+                headerImage.setImageResource(R.drawable.lifestyle);
                 break;
             case "health":
                 v = getResources().getStringArray(R.array.health);
+                headerImage.setImageResource(R.drawable.health);
                 break;
             case "tech":
                 v = getResources().getStringArray(R.array.tech);
+                headerImage.setImageResource(R.drawable.technology);
                 break;
             case "business":
                 v = getResources().getStringArray(R.array.business);
+                headerImage.setImageResource(R.drawable.business);
                 break;
             case "entertainment":
                 v = getResources().getStringArray(R.array.entertainment);
+                headerImage.setImageResource(R.drawable.entertainment);
                 break;
             case "weather":
                 v = getResources().getStringArray(R.array.weather);
+                headerImage.setImageResource(R.drawable.weather);
                 break;
             case "art":
                 v = getResources().getStringArray(R.array.art);
+                headerImage.setImageResource(R.drawable.art_music);
                 break;
             case "travel":
                 v = getResources().getStringArray(R.array.travel);
+                headerImage.setImageResource(R.drawable.travel);
                 break;
             case "science":
                 v = getResources().getStringArray(R.array.science);
+                headerImage.setImageResource(R.drawable.science);
                 break;
             case "food":
                 v = getResources().getStringArray(R.array.food);
+                headerImage.setImageResource(R.drawable.food);
                 break;
             case "other":
                 v = getResources().getStringArray(R.array.other);
+                headerImage.setImageResource(R.drawable.other);
                 break;
             default:
                 v = getResources().getStringArray(R.array.trending);
+                headerImage.setImageResource(R.drawable.trending);
                 break;
 
         }

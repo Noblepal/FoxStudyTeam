@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,12 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.trichain.foxstudyteam.ItemDetailActivity;
 import com.trichain.foxstudyteam.R;
-import com.trichain.foxstudyteam.models.News;
 import com.trichain.foxstudyteam.models.RSSItem;
 
 import java.util.ArrayList;
@@ -40,16 +36,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v=null;
-        if (viewType==1){
+        View v = null;
+        if (viewType == 1) {
 
-            View vv= LayoutInflater.from(context).inflate(R.layout.banner,parent,false);
-            AdView adView=vv.findViewById(R.id.banner);
+            View vv = LayoutInflater.from(context).inflate(R.layout.banner, parent, false);
+            AdView adView = vv.findViewById(R.id.banner);
             AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
-            v=vv;
-        }else{
-            v= LayoutInflater.from(context).inflate(R.layout.item_list_content, parent, false);
+            v = vv;
+        } else {
+            v = LayoutInflater.from(context).inflate(R.layout.item_list_content, parent, false);
 
 
         }
@@ -59,9 +55,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         final RSSItem news = newsArrayList.get(position);
-        if (position % 4 == 0){
+        if (position % 4 == 0) {
 
-        }else {
+        } else {
             holder.category.setText(category);
             holder.title.setText(news.getTitle());
             holder.link.setText(news.getLink());
@@ -81,12 +77,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             });
 
 //        holder.category.setText(news.getCategory());
-            Log.e("NewsAdapter", "onBindViewHolder: "+news.getImage() );
-        Glide.with(context)
-                .load(news.getImage())
-                .fallback(R.drawable.ic_broken_image)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.image);
+            Log.e("NewsAdapter", "onBindViewHolder: " + news.getImage());
+            Glide.with(context)
+                    .load(news.getImage())
+                    .fallback(R.drawable.ic_broken_image)
+                    .placeholder(R.drawable.ic_broken_image)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.image);
 //        holder.category.getParent().f
         }
 
