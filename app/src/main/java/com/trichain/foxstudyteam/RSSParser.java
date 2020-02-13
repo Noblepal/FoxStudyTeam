@@ -144,26 +144,30 @@ public class RSSParser {
                             break;
 
                     }*/
-                    /*if(image==null){
-                        Element elem=(Element) items.item(i);
-                        Node child;
-                        if (elem != null) {
-                            if (elem.hasChildNodes()) {
-                                for (child = elem.getFirstChild(); child != null; child = child
-                                        .getNextSibling()) {
-                                    if ("media:content".equals(child)) {
-                                        Element contentElement = (Element) elem;
-                                        if (contentElement.hasAttribute("url")) {
-                                            image = contentElement.getAttribute("url");
-                                            Log.e(TAG, "getRSSFeedItems: data:: " + image);
-                                        }
-                                    }
+                    String[] manychannels=rss_feed_xml.split("<"+TAG_CHANNEL+">");
+                    if (2<=manychannels.length){
+                        String[] manyitems=manychannels[1].split("<"+TAG_ITEM+">");
+                        if (i<=(manyitems.length-1)){
+                            String[] manyimages=manyitems[i+1].split(".jpg");
+//                            Log.e(TAG, "manyimages: " +manyimages[0]);
+                            if (2<=manyimages.length){
+                                String org=manyimages[0];
+                                String[] bits = org.split("\"");
+                                String lastOne = bits[bits.length-1];
 
-                                }
+                                Log.e(TAG, "Final image 1: "+lastOne+".jpg");
+                                Log.e(TAG, "Final image 2: "+title );
+                                image=lastOne+".jpg";
+                            }else{
+                                Log.e(TAG, "Final: Nothing" );
                             }
+                        }else{
+                            Log.e(TAG, "getImage: ");
                         }
+                    }else{
+                        Log.e(TAG, "getImage: ");
+                    }
 
-                    }*/
 
                     RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, category,image);
                     rssItem.setTitle(title);
