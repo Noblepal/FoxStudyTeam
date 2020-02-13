@@ -39,4 +39,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e(TAG, "getViewWordId: "+name5 );
         return name5;
     }
+    public void back(View view){
+        super.onBackPressed();
+    }
 }

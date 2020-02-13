@@ -18,7 +18,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5990593991251308~2049367436"/>
+            android:value="ca-app-pub-4862479627661797~9731544196"/>
         <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:name=".MainActivity">
             <intent-filter>
