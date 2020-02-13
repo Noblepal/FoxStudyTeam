@@ -73,7 +73,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         AdRequest adRequest = new AdRequest.Builder().build();
 
         // Load ads into Interstitial Ads
-//        mInterstitialAd.loadAd(adRequest);
+        mInterstitialAd.loadAd(adRequest);
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -193,8 +193,11 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                     Log.i("hello", "world");
                     runOnUiThread(new Runnable() {
                         public void run() {
+                            AdRequest adRequest = new AdRequest.Builder().build();
+
+                            // Load ads into Interstitial Ads
+                            mInterstitialAd.loadAd(adRequest);
                             if (mInterstitialAd.isLoaded() && isVisible) {
-                                mInterstitialAd.show();
                             } else {
                                 Log.d("TAG", " Interstitial not loaded");
                             }
@@ -202,7 +205,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                         }
                     });
                 }
-            }, 10, 10, TimeUnit.SECONDS);
+            }, 45, 45, TimeUnit.SECONDS);
 
         }
 
