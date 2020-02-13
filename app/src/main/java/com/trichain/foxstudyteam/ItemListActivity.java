@@ -132,7 +132,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         }
         category = getIntent().getExtras().getString("category", "trending");
         @SuppressLint("SimpleDateFormat")
-        DateFormat df = new SimpleDateFormat("EEE MMMM dd");
+        DateFormat df = new SimpleDateFormat("EEE, MMMM dd");
         String now = df.format(new Date());
         Log.e(TAG, "onCreate: " + now);
         ((TextView) findViewById(R.id.textView)).setText(now);
@@ -226,9 +226,9 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                         startActivity(intent);
                         finish();
                     }
-                }, 500);
+                }, 1);
             }
-        }, 400);
+        }, 2);
     }
 
     private void getDataFromNEt(String category) {
