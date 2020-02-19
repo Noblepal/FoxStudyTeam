@@ -6,14 +6,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +28,8 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.kobakei.ratethisapp.RateThisApp;
 import com.trichain.foxstudyteam.adapter.NewsAdapter;
 import com.trichain.foxstudyteam.models.RSSItem;
@@ -61,12 +67,15 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
     private ScheduledExecutorService scheduler, scheduler2;
     private boolean isVisible;
     RewardedVideoAd mAd;
+    Boolean gtimeout=true;
+    Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
+        recyclerView = findViewById(R.id.item_list);
         MobileAds.initialize(this, getResources().getString(R.string.ad_id_banner));
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.ad_id_interstitial));
@@ -78,28 +87,68 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
             @Override
             public void onAdLoaded() {
                 isVisible = true;
+                gtimeout=true;
+//                ((View) findViewById(R.id.textViewb)).setVisibility(View.VISIBLE);
+
+                final Toast toast=Toast.makeText(ItemListActivity.this,"This ad helps keep our app free of charge",Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.TOP,0,0);
+                toast.show();
+//                Handler handler1 = new Handler();
+//                while (gtimeout) {
+//                    handler1.postDelayed(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            final Toast toast=Toast.makeText(ItemListActivity.this,"This ad helps keep our app free of charge",Toast.LENGTH_LONG);
+//                            toast.setGravity(Gravity.TOP,0,0);
+//                            toast.show();
+//                        }
+//                    }, 1000 * 1);
+//                }
+
+                 snackbar=Snackbar.make(recyclerView,"This ad helps keep our app free of charge", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                snackbar.setAction("Ok", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                View view = snackbar.getView();
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)view.getLayoutParams();
+                params.gravity = Gravity.TOP;
+
+                view.setLayoutParams(params);
+                view.setElevation(20f);
+                ViewCompat.setElevation(view,20f);
+                ViewCompat.setTranslationZ(view,5);
+//                snackbar.show();
                 mInterstitialAd.show();
-                ((View) findViewById(R.id.textViewb)).setVisibility(View.VISIBLE);
+                view.bringToFront();
             }
+
 
             @Override
             public void onAdFailedToLoad(int i) {
                 super.onAdFailedToLoad(i);
+                gtimeout=false;
             }
 
             @Override
             public void onAdLeftApplication() {
                 super.onAdLeftApplication();
+                gtimeout=false;
             }
 
             @Override
             public void onAdOpened() {
                 super.onAdOpened();
+                gtimeout=false;
             }
 
             @Override
             public void onAdClicked() {
                 super.onAdClicked();
+                gtimeout=false;
             }
 
             @Override
@@ -112,6 +161,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                 AdRequest adRequest = new AdRequest.Builder().build();
                 ((View) findViewById(R.id.textViewb)).setVisibility(View.GONE);
 
+                gtimeout=false;
                 // Load ads into Interstitial Ads
 //                mInterstitialAd.loadAd(adRequest);
             }
@@ -139,7 +189,6 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         Log.e(TAG, "onCreate: " + now);
         ((TextView) findViewById(R.id.textView)).setText(now);
 
-        recyclerView = findViewById(R.id.item_list);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewsAdapter(this, newsArrayList, category);
