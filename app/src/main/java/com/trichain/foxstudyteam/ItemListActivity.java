@@ -82,7 +82,10 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         AdRequest adRequest = new AdRequest.Builder().build();
 
         // Load ads into Interstitial Ads
-        mInterstitialAd.loadAd(adRequest);
+
+        if (!isVisible) {
+            mInterstitialAd.loadAd(adRequest);
+        }
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -137,18 +140,21 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
             public void onAdLeftApplication() {
                 super.onAdLeftApplication();
                 gtimeout=false;
+                isVisible=false;
             }
 
             @Override
             public void onAdOpened() {
                 super.onAdOpened();
                 gtimeout=false;
+                isVisible=false;
             }
 
             @Override
             public void onAdClicked() {
                 super.onAdClicked();
                 gtimeout=false;
+                isVisible=false;
             }
 
             @Override
@@ -162,6 +168,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                 ((View) findViewById(R.id.textViewb)).setVisibility(View.GONE);
 
                 gtimeout=false;
+                isVisible=false;
                 // Load ads into Interstitial Ads
 //                mInterstitialAd.loadAd(adRequest);
             }
@@ -177,11 +184,11 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
         RateThisApp.onStart(this);
-        if (getIntent().getBooleanExtra("rate", true)) {
-            // Monitor launch times and interval from installation
-            // If the condition is satisfied, "Rate this app" dialog will be shown
-            RateThisApp.showRateDialogIfNeeded(this);
-        }
+        // Custom condition: 3 days and 5 launches
+        RateThisApp.Config config = new RateThisApp.Config(0, 4);
+        RateThisApp.init(config);
+        RateThisApp.showRateDialogIfNeeded(this);
+
         category = getIntent().getExtras().getString("category", "trending");
         @SuppressLint("SimpleDateFormat")
         DateFormat df = new SimpleDateFormat("EEE, MMMM dd");
@@ -239,22 +246,24 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
             scheduler = Executors.newSingleThreadScheduledExecutor();
             scheduler.scheduleAtFixedRate(new Runnable() {
                 public void run() {
-                    Log.i("hello", "world");
+                    Log.e("hello", "world");
                     runOnUiThread(new Runnable() {
                         public void run() {
                             AdRequest adRequest = new AdRequest.Builder().build();
 
                             // Load ads into Interstitial Ads
-                            mInterstitialAd.loadAd(adRequest);
-                            if (mInterstitialAd.isLoaded() && isVisible) {
-                            } else {
-                                Log.d("TAG", " Interstitial not loaded");
+                            if (!isVisible){
+                                mInterstitialAd.loadAd(adRequest);
+                                if (mInterstitialAd.isLoaded() && isVisible) {
+                                } else {
+                                    Log.d("TAG", " Interstitial not loaded");
+                                }
                             }
                             displayInterstitial();
                         }
                     });
                 }
-            }, 45, 45, TimeUnit.SECONDS);
+            }, 60, 60, TimeUnit.SECONDS);
 
         }
 

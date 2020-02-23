@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.kobakei.ratethisapp.RateThisApp;
+
 import java.lang.reflect.Field;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +18,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RateThisApp.onStart(this);
+        // Custom condition: 3 days and 5 launches
+        RateThisApp.Config config = new RateThisApp.Config(0, 4);
+        RateThisApp.init(config);
+        RateThisApp.showRateDialogIfNeeded(this);
+//        startService(new Intent(getApplicationContext(), AdService.class));
     }
     public void goToNext(View view){
         Intent intent=new Intent(MainActivity.this, ItemListActivity.class);
@@ -41,5 +50,14 @@ public class MainActivity extends AppCompatActivity {
     }
     public void back(View view){
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        Intent intent = new Intent(MainActivity.this, MainService.class);
+
+        startService(intent);
+        super.onDestroy();
     }
 }

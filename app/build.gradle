@@ -18,9 +18,9 @@ android {
         }
 
         debug {
-            minifyEnabled true
+            /*minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'*/
         }
     }
 }
@@ -35,7 +35,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     //Material Components
-    implementation 'com.google.android.material:material:1.2.0-alpha04'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
 
     //Glide
 
@@ -53,4 +53,5 @@ dependencies {
 
     //ads
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
+
 }

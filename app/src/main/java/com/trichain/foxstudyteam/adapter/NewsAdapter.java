@@ -2,6 +2,8 @@ package com.trichain.foxstudyteam.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +61,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         } else {
             holder.category.setText(category);
-            holder.title.setText(news.getTitle());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                holder.title.setText(Html.fromHtml(news.getTitle(), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                holder.title.setText(Html.fromHtml(news.getTitle()));
+            }
             holder.link.setText(news.getLink());
             holder.thisitem.setOnClickListener(new View.OnClickListener() {
                 @Override

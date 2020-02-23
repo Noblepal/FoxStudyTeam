@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoxStudyTeam</string>
+    <string name="app_name">News Feed.io</string>
     <string name="title_item_detail">Item Detail</string>
 
     <!--rss links-->
@@ -101,8 +101,8 @@
     <string name="interstitial_ad_sample">Interstitial Ad Sample</string>
     <string name="level_one">Level One</string>
     <string name="level_two">Level Two</string>
-    <string name="ad_id_interstitial">ca-app-pub-4862479627661797/6589347869</string>
-    <string name="ad_id_banner">ca-app-pub-4862479627661797/2426741571</string>
+    <string name="ad_id_interstitial">ca-app-pub-4677450257753753/5681570235</string>
+    <string name="ad_id_banner">ca-app-pub-4677450257753753/3901584703</string>
     <string name="ad_id_reward">ca-app-pub-3940256099942544/5224354917</string>
     <string name="gameHeader">My Game App</string>
 </resources>
