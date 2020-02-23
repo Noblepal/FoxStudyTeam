@@ -125,7 +125,7 @@ public class Splash extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-        }, 500);
+        }, 5000);
     }
 
     private void toggle() {
