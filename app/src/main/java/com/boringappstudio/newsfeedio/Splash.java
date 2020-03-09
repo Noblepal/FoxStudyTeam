@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam;
+package com.boringappstudio.newsfeedio;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

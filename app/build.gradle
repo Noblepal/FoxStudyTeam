@@ -4,23 +4,25 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.trichain.foxstudyteam"
+        applicationId "com.boringappstudio.newsfeedio"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName '1.2'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        resConfigs "en"
     }
     buildTypes {
-        release {
+        release {/*
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'*/
         }
 
         debug {
-            /*minifyEnabled true
+            minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'*/
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

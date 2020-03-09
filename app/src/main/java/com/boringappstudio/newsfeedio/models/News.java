@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam.models;
+package com.boringappstudio.newsfeedio.models;
 
 public class News {
     private String category, title, link, imagr_url;

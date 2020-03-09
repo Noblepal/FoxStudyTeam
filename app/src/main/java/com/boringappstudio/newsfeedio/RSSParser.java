@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam;
+package com.boringappstudio.newsfeedio;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,15 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.trichain.foxstudyteam.adapter.NewsAdapter;
-import com.trichain.foxstudyteam.models.RSSItem;
+import com.boringappstudio.newsfeedio.adapter.NewsAdapter;
+import com.boringappstudio.newsfeedio.models.RSSItem;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParser;

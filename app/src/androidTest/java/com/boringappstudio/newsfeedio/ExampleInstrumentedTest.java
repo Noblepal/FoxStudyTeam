@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam;
+package com.boringappstudio.newsfeedio;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.trichain.foxstudyteam", appContext.getPackageName());
+        assertEquals("com.boringappstudio.newsfeedio", appContext.getPackageName());
     }
 }

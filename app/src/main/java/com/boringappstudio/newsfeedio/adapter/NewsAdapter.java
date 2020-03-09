@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam.adapter;
+package com.boringappstudio.newsfeedio.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,9 +18,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.trichain.foxstudyteam.ItemDetailActivity;
-import com.trichain.foxstudyteam.R;
-import com.trichain.foxstudyteam.models.RSSItem;
+import com.boringappstudio.newsfeedio.ItemDetailActivity;
+import com.boringappstudio.newsfeedio.R;
+import com.boringappstudio.newsfeedio.models.RSSItem;
 
 import java.util.ArrayList;
 

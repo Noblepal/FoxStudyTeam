@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam.models;
+package com.boringappstudio.newsfeedio.models;
 
 public class RSSItem {
     public String title;

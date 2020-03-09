@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam;
+package com.boringappstudio.newsfeedio;
 
 import org.junit.Test;
 

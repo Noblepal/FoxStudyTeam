@@ -1,6 +1,5 @@
-package com.trichain.foxstudyteam;
+package com.boringappstudio.newsfeedio;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,8 +15,6 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
-import com.google.android.gms.ads.AdRequest;
 
 import java.util.Timer;
 import java.util.concurrent.Executors;

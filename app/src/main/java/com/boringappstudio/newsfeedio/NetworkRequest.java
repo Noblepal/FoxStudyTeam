@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam;
+package com.boringappstudio.newsfeedio;
 
 import android.app.Application;
 import android.content.Context;

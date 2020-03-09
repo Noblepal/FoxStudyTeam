@@ -1,10 +1,12 @@
-package com.trichain.foxstudyteam;
+package com.boringappstudio.newsfeedio;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -31,8 +33,9 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.kobakei.ratethisapp.RateThisApp;
-import com.trichain.foxstudyteam.adapter.NewsAdapter;
-import com.trichain.foxstudyteam.models.RSSItem;
+import com.boringappstudio.newsfeedio.adapter.NewsAdapter;
+import com.boringappstudio.newsfeedio.models.RSSItem;
+import com.boringappstudio.newsfeedio.utils.UpdateCounter;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
@@ -54,7 +57,7 @@ import java.util.concurrent.TimeUnit;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class ItemListActivity extends AppCompatActivity implements RewardedVideoAdListener {
+public class ItemListActivity extends AppCompatActivity implements RewardedVideoAdListener, UpdateCounter {
 
 
     private ArrayList<RSSItem> newsArrayList = new ArrayList<>();
@@ -65,16 +68,17 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
     private static final String TAG = "ItemListActivity";
     private InterstitialAd mInterstitialAd;
     private ScheduledExecutorService scheduler, scheduler2;
-    private boolean isVisible;
+    private boolean isVisible=false;
     RewardedVideoAd mAd;
     Boolean gtimeout=true;
+    Boolean isActive=false;
     Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
-
+        isActive=true;
         recyclerView = findViewById(R.id.item_list);
         MobileAds.initialize(this, getResources().getString(R.string.ad_id_banner));
         mInterstitialAd = new InterstitialAd(this);
@@ -83,9 +87,9 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
 
         // Load ads into Interstitial Ads
 
-        if (!isVisible) {
+       /* if (!isVisible) {
             mInterstitialAd.loadAd(adRequest);
-        }
+        }*/
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -96,19 +100,6 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                 final Toast toast=Toast.makeText(ItemListActivity.this,"This ad helps keep our app free of charge",Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.TOP,0,0);
                 toast.show();
-//                Handler handler1 = new Handler();
-//                while (gtimeout) {
-//                    handler1.postDelayed(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            final Toast toast=Toast.makeText(ItemListActivity.this,"This ad helps keep our app free of charge",Toast.LENGTH_LONG);
-//                            toast.setGravity(Gravity.TOP,0,0);
-//                            toast.show();
-//                        }
-//                    }, 1000 * 1);
-//                }
-
                  snackbar=Snackbar.make(recyclerView,"This ad helps keep our app free of charge", BaseTransientBottomBar.LENGTH_INDEFINITE);
                 snackbar.setAction("Ok", new View.OnClickListener() {
                     @Override
@@ -134,6 +125,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
             public void onAdFailedToLoad(int i) {
                 super.onAdFailedToLoad(i);
                 gtimeout=false;
+                isVisible = false;
             }
 
             @Override
@@ -204,14 +196,63 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
 
         TextView categoryTitle = findViewById(R.id.textViewCategory);
         categoryTitle.setText(category);
-
+        startTimer();
 
         getDataFromNEt(category);
     }
 
-    public void getmenu(View view) {
-        super.onBackPressed();
+    public void startTimer(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor editor = preferences.edit();
+
+        final int[] ctime = {preferences.getInt("myTime", 0)};
+        if (scheduler == null) {
+            scheduler = Executors.newSingleThreadScheduledExecutor();
+            scheduler.scheduleAtFixedRate(new Runnable() {
+                public void run() {
+                    Log.e("hello", "world"+ctime[0]);
+                    Log.e(TAG, "run: "+isVisible );
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            ctime[0]++;
+                            editor.putInt("myTime",ctime[0]);
+                            editor.commit();
+                            if (ctime[0] >=60){
+                                ctime[0]=0;
+                                AdRequest adRequest = new AdRequest.Builder().build();
+                                // Load ads into Interstitial Ads
+                                if (isActive&&!isVisible){
+                                    mInterstitialAd.loadAd(adRequest);
+                                    if (mInterstitialAd.isLoaded() && isVisible) {
+                                    } else {
+                                        Log.d("TAG", " Interstitial not loaded");
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }, 1, 1, TimeUnit.SECONDS);
+
+        }
     }
+    public void getmenu(View view) {
+        isActive=false;
+        Intent intent=new Intent(ItemListActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        isActive=false;
+        Log.e(TAG, "onBackPressed: " );
+
+        Intent intent=new Intent(ItemListActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 
     private void loadRewardedVideo(final RewardedVideoAd mAd) {
         isVisible = true;
@@ -241,8 +282,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
     @Override
     protected void onStart() {
         super.onStart();
-        isVisible = true;
-        if (scheduler == null) {
+      /*  if (scheduler == null) {
             scheduler = Executors.newSingleThreadScheduledExecutor();
             scheduler.scheduleAtFixedRate(new Runnable() {
                 public void run() {
@@ -253,7 +293,7 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
 
                             // Load ads into Interstitial Ads
                             if (!isVisible){
-                                mInterstitialAd.loadAd(adRequest);
+//                                mInterstitialAd.loadAd(adRequest);
                                 if (mInterstitialAd.isLoaded() && isVisible) {
                                 } else {
                                     Log.d("TAG", " Interstitial not loaded");
@@ -263,13 +303,27 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
                         }
                     });
                 }
-            }, 60, 60, TimeUnit.SECONDS);
+            }, 60, 60, TimeUnit.SECONDS);*/
 
-        }
+//        }
 
 
     }
 
+    @Override
+    public void onUpdateCounter(int time) {
+        //show add
+        // Load ads into Interstitial Ads
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if (!isVisible){
+            mInterstitialAd.loadAd(adRequest);
+            if (mInterstitialAd.isLoaded() && isVisible) {
+                Log.e("TAG", " onUpdateCounter loaded");
+            } else {
+                Log.e("TAG", " onUpdateCounter not loaded");
+            }
+        }
+    }
     private void displayInterstitial() {
 
     }
@@ -531,4 +585,5 @@ public class ItemListActivity extends AppCompatActivity implements RewardedVideo
     public void onRewardedVideoCompleted() {
 
     }
+
 }

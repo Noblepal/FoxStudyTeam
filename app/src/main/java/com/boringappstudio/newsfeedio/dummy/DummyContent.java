@@ -1,4 +1,4 @@
-package com.trichain.foxstudyteam.dummy;
+package com.boringappstudio.newsfeedio.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
